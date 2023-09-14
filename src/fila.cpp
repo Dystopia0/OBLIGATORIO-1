@@ -32,7 +32,7 @@ TLinea headRow(TFila fila){
 
 //Pos-Condición Inserta una nueva fila al principio de "fila"
  void insertRow (TFila &fila){
-    TFila nuevo
+    
  }
 
 //pre-condicion: fila !=NULL

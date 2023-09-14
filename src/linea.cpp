@@ -6,11 +6,12 @@
 #include <stdio.h>
 #include "../include/linea.h"
 
-struct _rep_linea
-{
+
+struct _rep_linea {
     char letra;
     _rep_linea *sig;
 };
+
 typedef struct _rep_linea *TLinea;
 
 TLinea createLine()

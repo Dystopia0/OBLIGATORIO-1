@@ -77,5 +77,8 @@ void setWritePermission(TArchivo &archivo, bool valor); //FERNAO
 //elimina toda la memoria utilizada por "archivo"
 void destroyFile (TArchivo &archivo); 
 
+//pos-condición: Retorna un puntero a la linea de la primer fila del archivo "archivo"
+TLinea getFirstLine (TArchivo archivo); //FERNAO
+
 
 #endif
