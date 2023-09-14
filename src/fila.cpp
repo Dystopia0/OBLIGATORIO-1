@@ -30,6 +30,11 @@ TLinea headRow(TFila fila){
     return fila->linea;
 }
 
+//Pos-Condición Inserta una nueva fila al principio de "fila"
+ void insertRow (TFila &fila){
+    TFila nuevo
+ }
+
 //pre-condicion: fila !=NULL
 //pos-condicion: Retorna un puntero al siguente elemento de la fila "fila"
 TFila nextRow (TFila fila){
@@ -39,8 +44,10 @@ TFila nextRow (TFila fila){
 //pre-condicion: fila != NULL
 //elimina el primer nodo de la fila "fila"
 void deleteFirstRow (TFila &fila){
-    TFila actual = new _rep_fila;
     TFila aux = new _rep_fila;
+    aux = fila;
+    fila = fila->sig;
+    delete aux;
 }
 
 //Elimina toda la memoria de la fila "fila"
