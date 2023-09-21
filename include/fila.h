@@ -33,6 +33,9 @@ TLinea headRow(TFila fila);
 //pre-condicion: fila !=NULL
 //pos-condicion: Retorna un puntero al siguente elemento de la fila "fila"
 TFila nextRow (TFila fila);
+
+//Pos-Condición modifica el primer elemento de la fila "fila" agregando los caracteres al inicio del primer elemento "linea" de la fila.
+void modifyRow (TFila &fila, Cadena caracteres);
  
 //pre-condicion: fila != NULL
 //elimina el primer nodo de la fila "fila"

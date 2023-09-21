@@ -32,6 +32,9 @@ TLinea headRow(TFila fila){
 
 //Pos-Condición Inserta una nueva fila al principio de "fila"
  void insertRow (TFila &fila){
+    TFila nuevo = createRow();
+    nuevo->sig = fila;
+    fila = nuevo;
     
  }
 
@@ -60,6 +63,11 @@ void deleteRows (TFila& fila){
     }
     
    
+}
+
+//Pos-Condición modifica el primer elemento de la fila "fila" agregando los caracteres al inicio del primer elemento "linea" de la fila.
+void modifyRow (TFila &fila, Cadena caracteres){
+    
 }
 
 bool isEmptyRow(TFila fila){

@@ -38,6 +38,11 @@ char* getFileName (TArchivo archivo){//luis
         return archivo->nombre;
 }
 
+//Retorna retorna un puntero a la primer fila del archivo "archivo"
+TFila firstRowFile (TArchivo archivo){
+    return archivo->fila;
+}
+
 bool haveWritePermission (TArchivo archivo){
     return (archivo->escritura);
        
@@ -167,28 +172,6 @@ void setExtension(TArchivo &archivo, Cadena nuevaExtension) {
 }
 
 //pre-condicion El archivo tiene por lo menos una fila
-//Inserta el texto "texto" al inicio de la primer fila del archivo
-void insertChartsFirstRow(TArchivo &archivo, Cadena texto) {//luis duda
-        // Crear una nueva fila
-        TFila nuevaFila = createRow();
-
-        // Crear una nueva línea para el texto
-        TLinea nuevaLinea = createLine();
-        for (int i = 0; texto[i] != '\0'; i++) {
-            insertCharLine(texto[i], nuevaLinea);
-        }
-
-        // Asignar la nueva línea a la nueva fila
-        nuevaFila->linea = nuevaLinea;
-
-        // Conectar la nueva fila a la lista de filas del archivo
-        nuevaFila->sig = archivo->fila;
-
-        // Establecer la nueva fila como la primera fila del archivo
-        archivo->fila = nuevaFila;
-    }
-
-
 //Inserta el texto "texto" como una nueva fila al comienzo del archivo 
 void insertChartsNewRow(TArchivo &archivo, Cadena texto){
 

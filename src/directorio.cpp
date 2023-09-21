@@ -4,6 +4,8 @@
 #include "../include/fila.h"
 #include "../include/directorio.h"
 #include "../include/archivo.h"
+#include "string.h"
+#include "stdio.h"
 
 struct listaArchivos{
   TArchivo archivos;
@@ -93,10 +95,16 @@ void insertTextFile(TDirectorio& directorio, Cadena nombreArchivo, Cadena texto)
         }
 
         // Agregar la nueva línea al comienzo del archivo
-        nextRow(nuevaFila) = archivo->fila;
-        archivo->fila = nuevaFila;
+        nextRow(nuevaFila) = firstRowFile(archivo); //nuevaFila->sig = archivo->fila;
+        firstRowFile(archivo) = nuevaFila; //  archivo->fila = nuevaFila;
     }
 
+}
+
+
+void insertTextFile(TDirectorio& directorio, Cadena nombreArchivo, Cadena texto) {
+
+    
 }
 
 //pre-condicion: existe el archivo de nombre "nombreArchivo" en el directorio "directorio"
@@ -136,7 +144,7 @@ void deleteCharsFile(TDirectorio& directorio, Cadena nombreArchivo, int cantidad
 
     if (archivo != NULL && getFirstRow(archivo) != NULL) {
         // Eliminar los caracteres iniciales de la primera línea del archivo
-        TFila primeraFila = getFirstRow(archivo); //con funcion nueva
+        TFila primeraFila = firstRowFile (archivo); //con funcion nueva
         TLinea primeraLinea = headRow(primeraFila);
 
         if (primeraLinea != NULL) {
@@ -179,7 +187,7 @@ void printFile(TDirectorio& directorio, Cadena nombreArchivo) {
     // Buscar el archivo por nombre en el directorio
     TArchivo archivo = getFileDirectory(directorio, nombreArchivo);
 
-    TFila filaActual = archivo->fila;
+    TFila filaActual = firstRowFile (archivo);
     while (filaActual != NULL) {
         TLinea lineaActual = headRow(filaActual);
         while (lineaActual != NULL) {

@@ -30,6 +30,9 @@ TArchivo createEmptyFile (Cadena nombreArchivo, Cadena extension); //FERNAO
 //Retorna un puntero a un array con el nombre del archivo "archivo"
 char* getFileName (TArchivo archivo);
 
+//Retorna retorna un puntero a la primer fila del archivo "archivo"
+TFila firstRowFile (TArchivo archivo);
+
 //Retorna true si archivo tiene permiso de escritura
 bool haveWritePermission (TArchivo archivo);  //FERNAO
 
