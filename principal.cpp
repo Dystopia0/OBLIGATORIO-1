@@ -193,7 +193,25 @@ TipoRet ATTRIB (TDirectorio &sistema, Cadena nombreArchivo, Cadena nombrearchivo
 }
 
 TipoRet IF (TDirectorio &sistema, Cadena nombreArchivo, Cadena texto){
-        return NO_IMPLEMENTADA;
+       Archivo archivo=sistema->buscar(nombreArchivo);
+
+       if(archivo==NULL)
+       {
+        return ERROR;
+       }
+       else{
+        return OK;
+       }
+false
+
+
+
+
+
+
+
+9
+
 }
 
 TipoRet IN (TDirectorio &sistema, Cadena nombreArchivo, Cadena texto){

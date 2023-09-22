@@ -68,6 +68,14 @@ void deleteRows (TFila& fila){
 //Pos-Condición modifica el primer elemento de la fila "fila" agregando los caracteres al inicio del primer elemento "linea" de la fila.
 void modifyRow (TFila &fila, Cadena caracteres){
     
+    TLinea linea=fila->linea;
+    int i=0;
+    while(caracteres[i]!='\0')
+    {
+        char letra=caracteres[i];
+        insertCharLine(letra,linea);
+        i++;
+    }
 }
 
 bool isEmptyRow(TFila fila){

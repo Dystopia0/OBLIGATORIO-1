@@ -7,16 +7,13 @@
 #include "string.h"
 #include "stdio.h"
 
-struct listaArchivos{
-  TArchivo archivos;
-  listaArchivos* sig;
-};
+
 struct _rep_directorio {
    Cadena nombre;
    _rep_directorio* raiz;
    _rep_directorio* sig;
    _rep_directorio* ant;
-   listaArchivos* listaArchivo;
+   TFila* filas;
 };
 typedef struct _rep_directorio *TDirectorio;
 
@@ -32,22 +29,22 @@ TDirectorio createRootDirectory() {
     raiz->raiz = raiz;  // El puntero a raíz apunta al propio directorio raíz
     raiz->sig = NULL;
     raiz->ant = NULL;
-    raiz->listaArchivo = NULL;
+    raiz->filas = NULL;
 
     return raiz;
 }
 
 //retorna true si el directorio "directorio" no tiene archivos
 bool isEmptyDirectory(TDirectorio directorio) {// en teoria creo q con el primero falta
-    return (directorio != NULL && directorio->listaArchivo == NULL);
+    return (directorio != NULL && directorio->filas == NULL);
 }
 //retorna true si el archivo de nombre "nombreArchivo existe en el directorio "directorio"
 bool existFileDirectory(TDirectorio directorio, Cadena nombreArchivo) {//se podria agregar mas comentarios
-    if (directorio != NULL && directorio->listaArchivo != NULL) {
+    if (directorio != NULL && directorio->filas != NULL) {
         // Recorrer la lista de archivos en el directorio
-        listaArchivos* lista = directorio->listaArchivo;
+        TFila* f;as = directorio->filas;
         while (lista != NULL) {
-            if (strcmp(getFileName(lista->archivos), nombreArchivo) == 0) {
+            if (strcmp(getFileName(lista->), nombreArchivo) == 0) {
                 // Se encontró un archivo con el mismo nombre
                 return true;
             }
@@ -65,7 +62,7 @@ bool existFileDirectory(TDirectorio directorio, Cadena nombreArchivo) {//se podr
 //pos-condicion: retorna un puntero al archivo de nombre "nombreArchivo"
 TArchivo getFileDirectory(TDirectorio directorio, Cadena nombreArchivo) {
     // Recorrer la lista de archivos en el directorio
-    listaArchivos* lista = directorio->listaArchivo;
+    listaArchivos* lista = directorio->filas;
     while (lista != NULL) {
         if (strcmp(getFileName(lista->archivos), nombreArchivo) == 0) {
             // Se encontró un archivo con el mismo nombre
@@ -86,17 +83,9 @@ void insertTextFile(TDirectorio& directorio, Cadena nombreArchivo, Cadena texto)
 
     if (archivo != NULL) {
         // Crear una nueva fila y una nueva línea para el texto
-        TFila nuevaFila = createRow();
-        TLinea nuevaLinea = createLine();
-        
-        // Agregar los caracteres del texto a la nueva línea
-        for (int i = 0; texto[i] != '\0'; i++) {
-            insertCharLine(texto[i], nuevaLinea);
-        }
+         insertRow(directorio->filas);
+        modifyRow(directorio->filas,texto);
 
-        // Agregar la nueva línea al comienzo del archivo
-        nextRow(nuevaFila) = firstRowFile(archivo); //nuevaFila->sig = archivo->fila;
-        firstRowFile(archivo) = nuevaFila; //  archivo->fila = nuevaFila;
     }
 
 }
@@ -111,7 +100,7 @@ void insertTextFile(TDirectorio& directorio, Cadena nombreArchivo, Cadena texto)
 //pos-condicion: elimina el archivo del directorio "directorio" y toda la memoria utilizada por este.
 void deleteFileDirectory(TDirectorio& directorio, Cadena nombreArchivo) {
     // Buscar el archivo por nombre en el directorio
-    listaArchivos* lista = directorio->listaArchivo;
+    listaArchivos* lista = directorio->filas;
     listaArchivos* prevLista = NULL;
 
     while (lista != NULL) {
@@ -119,7 +108,7 @@ void deleteFileDirectory(TDirectorio& directorio, Cadena nombreArchivo) {
             // Se encontró el archivo, eliminarlo
             if (prevLista == NULL) {
                 // El archivo es el primer elemento de la lista
-                directorio->listaArchivo = lista->sig;
+                directorio->filas = lista->sig;
             } else {
                 // El archivo no es el primer elemento de la lista
                 prevLista->sig = lista->sig;
