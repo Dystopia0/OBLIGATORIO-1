@@ -75,7 +75,6 @@ TArchivo getFileDirectory(TDirectorio directorio, Cadena nombreArchivo) {
 }
 
 //pre condicion: el archivo nombreArchivo existe en directorio
-// el directorio tambien existe como precondicion,no?
 //pos-condicion: inserta una nueva fila al comienzo del archivo nombreArchivo conteniendo los chars texto
 void insertTextFile(TDirectorio& directorio, Cadena nombreArchivo, Cadena texto) {// duda de las ultimas 2 lineas
     // Buscar el archivo por nombre en el directorio
@@ -83,7 +82,7 @@ void insertTextFile(TDirectorio& directorio, Cadena nombreArchivo, Cadena texto)
 
     if (archivo != NULL) {
         // Crear una nueva fila y una nueva línea para el texto
-         insertRow(directorio->filas);
+        insertRow(directorio->filas);
         modifyRow(directorio->filas,texto);
 
     }

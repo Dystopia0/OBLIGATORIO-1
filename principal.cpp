@@ -177,6 +177,7 @@ int main() {
 //****************************** Funciones a implementar ************************************
 
 TipoRet CREARSISTEMA (TDirectorio &sistema){
+        
          return OK;
 }  
 
