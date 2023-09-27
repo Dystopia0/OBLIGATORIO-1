@@ -177,7 +177,7 @@ int main() {
 //****************************** Funciones a implementar ************************************
 
 TipoRet CREARSISTEMA (TDirectorio &sistema){
-        
+        TDirectorio raiz = createRootDirectory();
          return OK;
 }  
 

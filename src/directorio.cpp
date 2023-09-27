@@ -8,14 +8,21 @@
 #include "stdio.h"
 
 
+struct listaArchivos{
+  TArchivo archivos;
+  listaArchivos* sig;
+};
+
 struct _rep_directorio {
-   Cadena nombre;
+   char *nombre[15];
    _rep_directorio* raiz;
    _rep_directorio* sig;
    _rep_directorio* ant;
-   TFila* filas;
+   listaArchivos* listaArchivo;
 };
 typedef struct _rep_directorio *TDirectorio;
+
+
 
 //Crea el directorio de nombre Raíz del filesystem 
 TDirectorio createRootDirectory() {
@@ -82,7 +89,7 @@ void insertTextFile(TDirectorio& directorio, Cadena nombreArchivo, Cadena texto)
 
     if (archivo != NULL) {
         // Crear una nueva fila y una nueva línea para el texto
-        insertRow(directorio->filas);
+        insertRow(getFirstRow (TArchivo archivo));
         modifyRow(directorio->filas,texto);
 
     }
