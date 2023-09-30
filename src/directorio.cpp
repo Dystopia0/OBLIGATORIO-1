@@ -89,7 +89,7 @@ void insertTextFile(TDirectorio& directorio, Cadena nombreArchivo, Cadena texto)
 
     if (archivo != NULL) {
         // Crear una nueva fila y una nueva línea para el texto
-        insertRow(getFirstRow (TArchivo archivo));
+        insertRow(getFirstRow (directorio->listaArchivo));
         modifyRow(directorio->filas,texto);
 
     }
