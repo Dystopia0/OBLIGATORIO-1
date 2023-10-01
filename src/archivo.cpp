@@ -164,7 +164,7 @@ void setExtension(TArchivo &archivo, Cadena nuevaExtension) {
             strcpy(archivo->exten, nuevaExtension);
         } else {
             // Muestra un mensaje de error por pantalla
-            printf("Tamaño de extensión no válido. Debe tener entre 1 y 3 caracteres.") << endl;
+            printf("Tamaño de extensión no válido. Debe tener entre 1 y 3 caracteres.");
             // No asigna la nueva extensión
             archivo->exten = NULL;
         }
