@@ -59,13 +59,53 @@ TArchivo getFileDirectory(TDirectorio directorio, Cadena nombreArchivo) {
 void createFileInDirectory(TDirectorio& directorio, Cadena nombreArchivo) {
   Cadena extension;
   bool pe = true;
-  TArchivo archivo = createEmptyFile (nombreArchivo, extension);
-  setWritePermission(archivo, pe);
-  if(directorio->sig == NULL){
-    directorio->sig->archivos = archivo;
-  }else{
-    directorio = directorio->sig;
-  }
+
+    int largo=strlen(nombreArchivo);
+  Cadena cadena=new char[3];
+  Cadena extension=new char[largo-3];
+  int i=largo-1;
+  int j=2;
+    while (i>=0 && nombreArchivo[i]!='.' && j>=0 )
+    {
+        extension[j]=nombreArchivo[i];
+        i--;
+        j--;
+    }
+    extension[largo]='\0';
+  if(nombreArchivo[i]=='.')
+  {
+
+    if(j>=0)
+    {
+        int l=3-j;
+        int k=0;
+        while(k<3)
+        {
+            extension[k]=extension[l+1];
+            k++;
+           l--;
+        }
+     extension[k]='\0';
+     char* nombre=new char[strlen(nombreArchivo)-(k+1)];
+     for(int i=0;i<strlen(nombreArchivo)-k;i++)
+     {
+        nombre[i]=nombreArchivo[i];
+     }
+     nombre[strlen(nombreArchivo)-k]='\0';
+    
+
+
+    TArchivo archivo = createEmptyFile (nombre, extension);
+    //setWritePermission(archivo, pe);
+    while(directorio != NULL){
+        if(directorio->sig == NULL){
+            directorio->sig->archivos = archivo;
+        }else{
+            directorio = directorio->sig;
+        }
+    }
+    }
+    }
 }
 
 

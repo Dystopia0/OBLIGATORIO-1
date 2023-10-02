@@ -27,7 +27,7 @@ TArchivo createEmptyFile (Cadena nombreArchivo, Cadena extension){
     nuevo->exten = extension;
     nuevo->fila=NULL;
     nuevo->actual=NULL;
-    nuevo->SoloLectura=false;
+    nuevo->SoloLectura=true;
     nuevo->escritura=true;
     nuevo->cantidadElementos=0;
     return nuevo;
