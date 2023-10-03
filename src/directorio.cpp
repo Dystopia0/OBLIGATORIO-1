@@ -7,13 +7,18 @@
 #include "string.h"
 #include "stdio.h"
 
+struct nodoArchivo{
+    TArchivo archivo;
+    nodoArchivo* sig;
+};
+typedef nodoArchivo *ListaArchivos;
 
 struct _rep_directorio {
    Cadena nombre;
    _rep_directorio* raiz;
    _rep_directorio* sig;
-   _rep_directorio* ant;
-   TArchivo archivos; 
+   _rep_directorio* ant; 
+   ListaArchivos archivos;
 };
 typedef struct _rep_directorio *TDirectorio;
 
@@ -32,25 +37,28 @@ bool isEmptyDirectory(TDirectorio directorio) {
 }
 
 bool existFileDirectory(TDirectorio directorio, Cadena nombreArchivo) {
-    while (directorio != NULL) {
-        if (strcmp(getFileName(directorio->archivos), nombreArchivo) == 0) {
+    
+    ListaArchivos aux=directorio->archivos;
+    while (aux != NULL) {
+        if (strcmp(getFileName(aux->archivo), nombreArchivo) == 0) {
             return true;
         }
-        directorio = directorio->sig;
+        aux = aux->sig;
     }
     return false;
 }
 
 
 TArchivo getFileDirectory(TDirectorio directorio, Cadena nombreArchivo) {
-    while (directorio != NULL) {
-        if (strcmp(getFileName(directorio->archivos), nombreArchivo) == 0) {
-            return directorio->archivos;
+    ListaArchivos aux=directorio->archivos;
+    while (aux != NULL) {
+        if (strcmp(getFileName(aux->archivo), nombreArchivo) == 0) {
+            return aux->archivo;
         }
-        directorio = directorio->sig;
+        aux = aux->sig;
     }
-    return false;
-    return NULL; // Si no se encuentra el archivo
+    return NULL;
+   
 }
 
 //setExtension
@@ -74,7 +82,7 @@ void createFileInDirectory(TDirectorio& directorio, Cadena nombreArchivo) {
     extension[largo]='\0';
   if(nombreArchivo[i]=='.')
   {
-
+    char* nombre;
     if(j>=0)
     {
         int l=3-j;
@@ -86,33 +94,43 @@ void createFileInDirectory(TDirectorio& directorio, Cadena nombreArchivo) {
            l--;
         }
      extension[k]='\0';
-     char* nombre=new char[strlen(nombreArchivo)-(k+1)];
-     for(int i=0;i<strlen(nombreArchivo)-k;i++)
-     {
-        nombre[i]=nombreArchivo[i];
-     }
+     nombre=new char[strlen(nombreArchivo)-(k+1)];
+    
      nombre[strlen(nombreArchivo)-k]='\0';
     
+    }
 
-
+ for(int z=0;z<strlen(nombreArchivo)-i;z++)
+     {
+        nombre[z]=nombreArchivo[z];
+     }
     TArchivo archivo = createEmptyFile (nombre, extension);
-    //setWritePermission(archivo, pe);
-    while(directorio != NULL){
-        if(directorio->sig == NULL){
-            directorio->sig->archivos = archivo;
-        }else{
-            directorio = directorio->sig;
-        }
-    }
-    }
-    }
-}
+    nodoArchivo* nuevo=new nodoArchivo;
+    nuevo->archivo=archivo;
+    nuevo->sig=directorio->archivos;
+    directorio->archivos=nuevo;
+   
+    
+    
+    
+}}
 
 
 //pre condicion: el archivo nombreArchivo existe en directorio
 //pos-condicion: inserta una nueva fila al comienzo del archivo nombreArchivo conteniendo los chars texto
 void insertTextFile(TDirectorio& directorio, Cadena nombreArchivo, Cadena texto){
     
+    ListaArchivos aux = directorio->archivos;
+    while(aux!=NULL && getFileName(aux->archivo)!=nombreArchivo)
+    {
+        aux=aux->sig;
+    }
+    if(aux!=NULL)
+    {
+
+        insertRow ( firstRowFile( aux->archivo));
+        modifyRow (aux->archivo, texto);
+    }
 }
 
 
