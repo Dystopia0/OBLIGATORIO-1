@@ -61,59 +61,53 @@ TArchivo getFileDirectory(TDirectorio directorio, Cadena nombreArchivo) {
    
 }
 
+void separarExtension(const char* entrada, char* nombre, char* extension) {
+    int i = strlen(entrada) - 1;
+    // Buscar el punto desde el final de la cadena
+    while (i >= 0 && entrada[i] != '.') {
+        i--;
+    }
+
+    if (i >= 0) {
+        // Copiar la extensión
+        int j = 0;
+        while (entrada[i] != '\0' && j <= 3) {
+            extension[j] = entrada[i];
+            i++;
+            j++;
+        }
+        extension[j] = '\0'; 
+
+        // Copiar el nombre del archivo
+       for (int k = 0; k < i; k++) {
+            nombre[k] = entrada[k];
+        }
+        nombre[i] = '\0'; 
+    } else {
+
+        strcpy(nombre, entrada);
+        extension[0] = '\0'; // La extensión está vacía
+    }
+}
+
 //setExtension
 //pre-condicion: No existe en directorio un archivo de nombre "nombreArchivo"
 //crea un archivo vacio con nombre nombreArchivo y permiso de lectura/escritura
 void createFileInDirectory(TDirectorio& directorio, Cadena nombreArchivo) {
-  Cadena extension;
-  bool pe = true;
+    Cadena extension;
+    Cadena nombre;
+    bool pe = true;
 
-    int largo=strlen(nombreArchivo);
-  Cadena cadena=new char[3];
-  Cadena extension=new char[largo-3];
-  int i=largo-1;
-  int j=2;
-    while (i>=0 && nombreArchivo[i]!='.' && j>=0 )
-    {
-        extension[j]=nombreArchivo[i];
-        i--;
-        j--;
-    }
-    extension[largo]='\0';
-  if(nombreArchivo[i]=='.')
-  {
-    char* nombre;
-    if(j>=0)
-    {
-        int l=3-j;
-        int k=0;
-        while(k<3)
-        {
-            extension[k]=extension[l+1];
-            k++;
-           l--;
-        }
-     extension[k]='\0';
-     nombre=new char[strlen(nombreArchivo)-(k+1)];
-    
-     nombre[strlen(nombreArchivo)-k]='\0';
-    
-    }
-
- for(int z=0;z<strlen(nombreArchivo)-i;z++)
-     {
-        nombre[z]=nombreArchivo[z];
-     }
+    separarExtension(nombreArchivo, nombre, extension);
+   
     TArchivo archivo = createEmptyFile (nombre, extension);
     nodoArchivo* nuevo=new nodoArchivo;
     nuevo->archivo=archivo;
     nuevo->sig=directorio->archivos;
     directorio->archivos=nuevo;
-   
+         
     
-    
-    
-}}
+}
 
 
 //pre condicion: el archivo nombreArchivo existe en directorio
@@ -125,14 +119,90 @@ void insertTextFile(TDirectorio& directorio, Cadena nombreArchivo, Cadena texto)
     {
         aux=aux->sig;
     }
-    if(aux!=NULL)
-    {
-
-        insertRow ( firstRowFile( aux->archivo));
+        insertRow ( firstRowFile( aux->archivo)); //DUDA
         modifyRow (aux->archivo, texto);
-    }
+    
 }
 
 
+//pre condicion: el archivo nombreArchivo existe en directorio
+//pos-condicion: agrega al comienzo de la primera fila del archivo de nombre nombreArchivo los caracteres de texto
+//desplazando los caracteres existentes hacia la derecha
+void insertCharsFileFirstLine(TDirectorio& directorio, Cadena nombreArchivo, Cadena texto){
+    ListaArchivos aux = directorio->archivos;
+    while(aux!=NULL && getFileName(aux->archivo)!=nombreArchivo)
+    {
+        aux=aux->sig;
+    }
+    insertChartsNewRow(aux->archivo, texto);
+
+
+}
+
+//pre-condicion: existe el archivo de nombre "nombreArchivo" en el directorio "directorio"
+//pos-condicion: elimina el archivo del directorio "directorio" y toda la memoria utilizada por este.
+void deleteFileDirectory(TDirectorio& directorio, Cadena nombreArchivo) {
+    ListaArchivos aux = directorio->archivos;
+    while(aux!=NULL && getFileName(aux->archivo)!=nombreArchivo)
+    {
+        aux=aux->sig;
+    }
+    if(aux!=NULL)
+    {
+        destroyFile(aux->archivo); 
+    }
+} 
+
+//pre-condicion: existe el archivo de nombre "nombreArchivo" en el directorio "directorio"
+//pos-condicion: elimina los "cantidad" caracteres iniciales del archivo nombreArchivo //DUDA
+void deleteCharsFile(TDirectorio& directorio, Cadena nombreArchivo, int cantidad){
+    ListaArchivos aux = directorio->archivos;
+        while(aux!=NULL && getFileName(aux->archivo)!=nombreArchivo)
+    {
+        aux=aux->sig;
+    }
+    if(aux!=NULL)
+    {
+         
+    }
+}
+
+//pre-condicion: existe el archivo de nombre "nombreArchivo" en el directorio "directorio"
+//pos-condicion: le setea el permiso de escritura al archivo de nombre nombreArchivo
+void setFilePermission(TDirectorio& directorio, Cadena nombreArchivo, bool permisoEscritura){
+    ListaArchivos aux = directorio->archivos;
+    bool escritura = true;
+    while(aux!=NULL && getFileName(aux->archivo)!=nombreArchivo)
+    {
+        aux=aux->sig;
+    }
+
+     setWritePermission(aux->archivo, escritura);
+}
+
+
+//pre-condicion: existe el archivo de nombre "nombreArchivo" en el directorio "directorio" //DUDA
+//pos-condicion: imprime el contenido del archivo "nombreArchivo"
+void printFile(TDirectorio& directorio, Cadena nombreArchivo){
+    ListaArchivos aux = directorio->archivos;
+    while(aux!=NULL && getFileName(aux->archivo)!=nombreArchivo)
+    {
+        aux=aux->sig;
+    }
+
+}
+
+void destroyDirectory (TDirectorio& directorio){
+    ListaArchivos aux = directorio->archivos;
+    while(aux!=NULL) //borro todos los archivos de directorio
+    {
+        ListaArchivos elim = aux;
+        aux=aux->sig;
+        destroyFile(elim->archivo);
+    }
+
+    delete directorio;
+
+}
 
 

@@ -175,6 +175,9 @@ void setExtension(TArchivo &archivo, Cadena nuevaExtension) {
 //Inserta el texto "texto" como una nueva fila al comienzo del archivo 
 void insertChartsNewRow(TArchivo &archivo, Cadena texto){
 
+    TFila principio = createRow();
+    modifyRow (principio, texto);
+    insertRow (principio); 
     archivo->cantidadElementos++;
 }
 

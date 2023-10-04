@@ -25,7 +25,7 @@ TFila createRow(){
 
 
 
-//no idea
+//nya idea
 TLinea headRow(TFila fila){
     return fila->linea;
 }
