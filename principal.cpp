@@ -199,45 +199,6 @@ TipoRet CREATE(TDirectorio &sistema, Cadena nombreArchivo) {
 
 
 
-TipoRet DELETE(TDirectorio &sistema, Cadena nombreArchivo) {
-    // Verificar si el archivo existe en el directorio
-    if (!existFileDirectory(sistema, nombreArchivo)) {
-        return ERROR; // El archivo no existe en el directorio
-    }
-
-    // Obtener el archivo del directorio
-    TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
-
-    // Verificar si el archivo tiene permiso de escritura
-    if (!haveWritePermission(archivo)) {
-        return ERROR; // El archivo es de solo lectura y no puede ser eliminado
-    }
-
-    // Eliminar el archivo de la lista de archivos del directorio
-        TFila anterior = NULL;
-        TFila actual = firstRowFile(archivo);
-        while (actual != NULL) {
-        TLinea lineaActual = headRow(actual);
-        if (strcmp(getFileName(lineaActual), nombreArchivo) == 0) {
-                if (anterior == NULL) {
-                archivo->fila = nextRow(actual);
-                } else {
-                anterior->sig = nextRow(actual);
-                }
-        destroyFile(lineaActual); // Liberar la memoria del archivo
-        deleteFirstRow(actual); // Liberar la memoria de la fila
-        return OK;
-    }
-    anterior = actual;
-    actual = nextRow(actual);
-}
-
-        anterior = actual;
-        actual = nextRow(actual;);
-    }
-
-    return ERROR; // No debería llegar aquí
-}
 
 TipoRet DELETE(TDirectorio &directorio, Cadena nombreArchivo) {
     // Verificar si el archivo existe en el directorio actual
@@ -272,47 +233,24 @@ TipoRet ATTRIB (TDirectorio &sistema, Cadena nombreArchivo, Cadena parametro){
         return ERROR; // El archivo no existe en el directorio actual
     }
 }
-6
+
 
 TipoRet IF(TDirectorio &sistema, Cadena nombreArchivo, Cadena texto) {
-    // Verificar si el archivo existe en el directorio
-    if (!existFileDirectory(sistema, nombreArchivo)) {
-        return ERROR; // El archivo no existe en el directorio
-    }
-
-    // Obtener el archivo del directorio
     TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
 
-    // Verificar si el archivo tiene permiso de escritura
-    if (!haveWritePermission(archivo)) {
-        return ERROR; // El archivo es de solo lectura y no puede ser modificado
-    }
+    int contador = TEXTO_MAX;
 
-    // Creamos una nueva fila
-    TFila nuevaFila = createRow();
+    insertChartsNewRow(archivo, texto);
 
-    // Modificamos la nueva fila para agregarle el texto
-    modifyRow(nuevaFila, texto);
+    TLinea linea=getFirstRow (archivo);
+     int cantidadCaracteres=countNodesLine(linea);
+     int eliminar=cantidadCaracteres-TEXTO_MAX;
+     for( int i=1;i<=eliminar;i++)
+     {
+        deleteLastChar(linea);
+     }
 
-    // Insertamos la nueva fila al comienzo del archivo
-    nuevaFila->sig = archivo->fila; // Hacemos que la nueva fila apunte a la primera fila del archivo
-    archivo->fila = nuevaFila; // Actualizamos el puntero de la primera fila del archivo a la nueva fila
-
-    // Calcular el total de caracteres en el archivo
-    int totalCaracteres = 0;
-    TFila current = archivo->fila;
-    while (current != NULL) {
-        totalCaracteres += strlen(current->texto);
-        current = current->sig;
-    }
-
-    // Truncar el texto si excede TEXTO_MAX
-    if (totalCaracteres > TEXTO_MAX) {
-        int caracteresAEliminar = totalCaracteres - TEXTO_MAX;
-        // Aquí necesitarías una función para eliminar caracteres del final del archivo
-    }
-
-    return OK; // Retornamos OK si todo salió bien
+    return OK;
 }
 
 TipoRet IN(TDirectorio &sistema, Cadena nombreArchivo, Cadena texto) {
@@ -367,40 +305,14 @@ TipoRet IN(TDirectorio &sistema, Cadena nombreArchivo, Cadena texto) {
 
 
 
-TipoRet DF(TDirectorio &sistema, Cadena nombreArchivo, Cadena cantidad) {
-    // Convertir la cantidad de caracteres a eliminar a un número entero
-    int K = atoi(cantidad);
+TipoRet DF(TDirectorio &sistema, Cadena nombreArchivo, int cantidad) { //chequear posibles errores
+  TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
 
-    // Verificar si el archivo existe en el directorio
-    if (!existFileDirectory(sistema, nombreArchivo)) {
-        return ERROR; // El archivo no existe en el directorio
-    }
-
-    // Obtener el archivo del directorio
-    TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
-
-    // Verificar si el archivo tiene permiso de escritura
-    if (!haveWritePermission(archivo)) {
-        return ERROR; // El archivo es de solo lectura y no puede ser modificado
-    }
-
-    // Eliminar los primeros K caracteres del archivo
-    TFila* actual = archivo->fila;
-    while (actual != NULL && K > 0) {
-        int len = strlen(actual->texto);
-        if (len <= K) {
-            // Si la longitud de la fila es menor o igual a K, eliminamos toda la fila
-            archivo->fila = actual->sig;
-            delete[] actual->texto;
-            delete actual;
-            K -= len;
-            actual = archivo->fila;
-        } else {
-            // Si la longitud de la fila es mayor que K, eliminamos los primeros K caracteres
-            memmove(actual->texto, actual->texto + K, len - K + 1);
-            K = 0;
-        }
-    }
+    TLinea linea=getFirstRow (archivo);
+     for( int i=1;i<=cantidad;i++)
+     {
+        deleteFirstChar(linea);
+     }
 
     return OK;
 }
@@ -455,36 +367,5 @@ TipoRet TYPE(TDirectorio &sistema, Cadena nombreArchivo) {
 }
 
 TipoRet DESTRUIRSISTEMA(TDirectorio &sistema) {
-    // Función recursiva para liberar la memoria de todos los archivos y sus filas
-    void destruirArchivo(TArchivo archivo) {
-        if (archivo == NULL) return;
-
-        // Liberar todas las filas del archivo
-        while (archivo->fila != NULL) {
-            TFila filaActual = archivo->fila;
-            archivo->fila = filaActual->sig;
-            delete[] filaActual->texto; // Liberar la memoria del texto de la fila
-            delete filaActual; // Liberar la memoria de la fila
-        }
-
-        // Liberar el nombre y la extensión del archivo
-        delete[] archivo->nombre;
-        delete[] archivo->extension;
-
-        // Liberar la memoria del archivo
-        delete archivo;
-    }
-
-    // Recorrer todos los archivos del directorio y liberar su memoria
-    while (sistema->archivo != NULL) {
-        TArchivo archivoActual = sistema->archivo;
-        sistema->archivo = archivoActual->sig;
-        destruirArchivo(archivoActual);
-    }
-
-    // Liberar la memoria del directorio
-    delete sistema;
-    sistema = NULL; // Establecer el puntero del sistema a NULL para evitar referencias a memoria liberada
-
-    return OK;
+    
 }

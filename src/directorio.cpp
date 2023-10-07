@@ -61,7 +61,7 @@ TArchivo getFileDirectory(TDirectorio directorio, Cadena nombreArchivo) {
    
 }
 
-void separarExtension(const char* entrada, char* nombre, char* extension) {
+void separarExtension(const char* entrada, char* &nombre, char* &extension) {
     int i = strlen(entrada) - 1;
     // Buscar el punto desde el final de la cadena
     while (i >= 0 && entrada[i] != '.') {
