@@ -119,8 +119,8 @@ void insertTextFile(TDirectorio& directorio, Cadena nombreArchivo, Cadena texto)
     {
         aux=aux->sig;
     }
-        insertRow ( firstRowFile( aux->archivo)); //DUDA
-        modifyRow (aux->archivo, texto);
+    insertChartsNewRow(aux->archivo, texto);
+
     
 }
 
