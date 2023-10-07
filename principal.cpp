@@ -109,12 +109,14 @@ int main() {
                  printf("EL SISTEMA YA FUE INICIALIZADO\n");
 
         }else if (0 == strcmp(comando, "CREATEFILE")) {   
-
+                printf("ingresa el nombre del archivo:\n"); 
+                Cadena nombrearchivo;
+                scanf("%s", &nombrearchivo);
                 TipoRet salida= CREATE(sistema, nombrearchivo);
                 if (salida == OK)
                         printf("OK\n");
-                else if (salida == NO_IMPLEMENTADA )
-                                printf("NO_IMPLEMENTADA\n"); 
+                else if (salida == ERROR )
+                                printf("NO_ANDA\n"); 
 
         } else if (0 == strcmp(comando, "DELETE")) {
                 TipoRet salida=DELETE(sistema,nombrearchivo);
