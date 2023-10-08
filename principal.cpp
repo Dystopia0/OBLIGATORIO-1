@@ -1,3 +1,4 @@
+
 /*
 Módulo principal de la tarea 1.FILE SYSTEM
 
@@ -254,35 +255,32 @@ TipoRet IF(TDirectorio &sistema, Cadena nombreArchivo, Cadena texto) {
 }
 
 TipoRet IN(TDirectorio &sistema, Cadena nombreArchivo, Cadena texto) {
-    // Buscar el archivo en el directorio actual
+
     TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
 
-    if (archivo != NULL) {
-        // Verificar si el archivo tiene permiso de escritura
+    if (!isEmptyFile(archivo)) {
+
         if (haveWritePermission(archivo)) {
-            // Obtener la primera línea del archivo
+        
             TLinea primeraLinea = getFirstLine(archivo);
 
-            // Calcular la longitud actual del archivo
             int longitudActual = getCountChars(archivo);
 
-            // Calcular la longitud del nuevo texto
             int longitudTexto = strlen(texto);
 
-            // Verificar si se excede el límite TEXTO_MAX
+
             if (longitudActual + longitudTexto > TEXTO_MAX) {
-                // Calcular la cantidad de caracteres que se deben eliminar
+
                 int caracteresAEliminar = longitudActual + longitudTexto - TEXTO_MAX;
 
-                // Eliminar caracteres de la última línea si es necesario
                 while (!isEmptyLine(primeraLinea) && caracteresAEliminar > 0) {
                     int longitudLinea = countNodesLine(primeraLinea);
                     if (caracteresAEliminar >= longitudLinea) {
-                        // Eliminar toda la línea
+
                         caracteresAEliminar -= longitudLinea;
                         deleteFirstChar(primeraLinea);
                     } else {
-                        // Eliminar solo los caracteres necesarios
+
                         for (int i = 0; i < caracteresAEliminar; i++) {
                             deleteFirstChar(primeraLinea);
                         }
@@ -319,25 +317,24 @@ TipoRet DF(TDirectorio &sistema, Cadena nombreArchivo, int cantidad) { //chequea
 
 
 TipoRet TYPE(TDirectorio &sistema, Cadena nombreArchivo) {
-    // Buscar el archivo en el directorio actual
+
     TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
 
-    if (archivo != NULL) {
-        // Imprimir el nombre del archivo
+    if (!isEmptyFile(archivo)) {
+
         printf("Contenido del archivo \"%s\":\n", nombreArchivo);
 
-        // Obtener la primera línea del archivo
+
         TLinea primeraLinea = getFirstLine(archivo);
 
-        // Verificar si el archivo tiene contenido
+
         if (!isEmptyLine(primeraLinea)) {
-            // Iterar a través de las líneas del archivo y mostrarlas
+
             while (primeraLinea != NULL) {
-                // Obtener el primer carácter de la línea
+
                 char primerCaracter = firstCharLine(primeraLinea);
                 TLinea lineaActual = primeraLinea;
 
-                // Imprimir la línea caracter por caracter
                 while (lineaActual != NULL) {
                     printf("%c", primerCaracter);
                     lineaActual = nextLine(lineaActual);
