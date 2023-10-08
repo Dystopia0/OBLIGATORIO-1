@@ -39,7 +39,7 @@ TipoRet DELETE (TDirectorio &sistema, char *nombreArchivo);
 TipoRet ATTRIB (TDirectorio &sistema, char *nombreArchivo, char* parametro);
 TipoRet IF (TDirectorio &sistema, char *nombreArchivo, char* texto);
 TipoRet IN (TDirectorio &sistema, char *nombreArchivo, char* texto);
-TipoRet DF (TDirectorio &sistema, char *nombreArchivo, char* cantidad);
+TipoRet DF (TDirectorio &sistema, char *nombreArchivo, int* cantidad);
 TipoRet TYPE (TDirectorio &sistema, char *nombreArchivo);
 TipoRet DESTRUIRSISTEMA (TDirectorio &sistema);
 
@@ -52,7 +52,7 @@ int main() {
     char parametro[MAX_PALABRA];
     char texto[MAX_PALABRA];
     char nombrearchivo[MAX_NOMBRE];
-    char cantidad [MAX_PALABRA];
+    int cantidad [MAX_PALABRA];
     //char parametro;
     TDirectorio sistema;
     int sistemaInicializado=false;
@@ -87,7 +87,6 @@ int main() {
         }
         else if (!strcmp(comando,"DF")){
                 leerChars(nombrearchivo);
-                leerChars(cantidad);
         }        
         else if (!strcmp(comando,"TYPE"))
                 leerChars(nombrearchivo);
@@ -110,8 +109,6 @@ int main() {
 
         }else if (0 == strcmp(comando, "CREATEFILE")) {   
                 printf("ingresa el nombre del archivo:\n"); 
-                Cadena nombrearchivo;
-                scanf("%s", &nombrearchivo);
                 TipoRet salida= CREATE(sistema, nombrearchivo);
                 if (salida == OK)
                         printf("OK\n");
@@ -119,6 +116,7 @@ int main() {
                                 printf("NO_ANDA\n"); 
 
         } else if (0 == strcmp(comando, "DELETE")) {
+            printf("DAME EL NOMBREEE");
                 TipoRet salida=DELETE(sistema,nombrearchivo);
                 if (salida == OK)
                         printf("OK\n");
@@ -184,13 +182,14 @@ TipoRet CREARSISTEMA (TDirectorio &sistema){
 }  
 
 TipoRet CREATE(TDirectorio &sistema, Cadena nombreArchivo) {
+    //Cadena extension = "txt";
    // Verificar si el nombre del archivo no está en uso en el directorio actual
     if (!existFileDirectory(sistema, nombreArchivo)) {
         // Crear un nuevo archivo vacío con el nombre proporcionado y extensión "txt"
-        TArchivo nuevoArchivo = createEmptyFile(nombreArchivo, "txt");
+       /*TArchivo nuevoArchivo = createEmptyFile(nombreArchivo, extension);
         
         // Agregar el nuevo archivo al directorio actual
-        createFileInDirectory(sistema, getFileName (nuevoArchivo));
+        createFileInDirectory(sistema, getFileName (nuevoArchivo));*/
         
         return OK; // Éxito al crear el archivo
     } else {
@@ -240,7 +239,6 @@ TipoRet ATTRIB (TDirectorio &sistema, Cadena nombreArchivo, Cadena parametro){
 TipoRet IF(TDirectorio &sistema, Cadena nombreArchivo, Cadena texto) {
     TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
 
-    int contador = TEXTO_MAX;
 
     insertChartsNewRow(archivo, texto);
 
@@ -309,7 +307,7 @@ TipoRet IN(TDirectorio &sistema, Cadena nombreArchivo, Cadena texto) {
 
 TipoRet DF(TDirectorio &sistema, Cadena nombreArchivo, int cantidad) { //chequear posibles errores
   TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
-
+  
     TLinea linea=getFirstRow (archivo);
      for( int i=1;i<=cantidad;i++)
      {
@@ -369,5 +367,5 @@ TipoRet TYPE(TDirectorio &sistema, Cadena nombreArchivo) {
 }
 
 TipoRet DESTRUIRSISTEMA(TDirectorio &sistema) {
-    
+    return OK;
 }

@@ -3,7 +3,7 @@
 #include "../include/archivo.h"
 #include "../include/linea.h"
 #include "../include/fila.h"
-#include <iostream>
+
 #include <stdio.h>
 #include <string.h>
 #define MAX_CARACTERES 50
@@ -67,7 +67,7 @@ TLinea getNextRow(TArchivo archivo) {
             return headRow(archivo->actual);
         }
     }
-    return NULL; // Si el archivo es nulo, no tiene filas o no hay siguiente fila, retorna NULL
+    return NULL; 
 }
 
 
@@ -121,8 +121,6 @@ void printLineFile(TArchivo archivo, int numero_linea){
 void deleteCharterFile(TArchivo &archivo, int cant) {
     if (!isEmptyFile(archivo) && cant > 0) {
         TLinea lineaActual = headRow(archivo->fila);
-        TFila ultimaFila = NULL;
-        TLinea ultimaLinea = NULL;
 
 
         while(isEmptyLine(lineaActual) && cant>0){
@@ -134,10 +132,10 @@ void deleteCharterFile(TArchivo &archivo, int cant) {
             if(cant>0)
             {
                lineaActual= nextLine(lineaActual);
-               TFila aux=archivo->fila;
+               TFila aux = archivo->fila;
                archivo->fila=nextRow(archivo->fila);
                 archivo->actual=archivo->fila;
-                delete aux;
+                deleteRows (aux);
             }
 
         }
@@ -186,11 +184,7 @@ void insertChartsNewRow(TArchivo &archivo, Cadena texto){
 //si valor == false se le quita el permiso de escritura de "archivo"
 //pre-condicion archivo !=NULL
 void setWritePermission(TArchivo &archivo, bool valor){
-   if(valor == true){
-    archivo->escritura == true;
-   }else{
-    archivo->escritura == false;
-   }
+    archivo->escritura = valor;
 }
 
 //elimina toda la memoria utilizada por "archivo"
@@ -203,7 +197,6 @@ void destroyFile(TArchivo &archivo) {
             
             // Elimina todas las líneas dentro de la fila
            deleteRows(filaAEliminar);
-            delete filaAEliminar;
         }
         
         // Libera la memoria de la estructura _rep_archivo

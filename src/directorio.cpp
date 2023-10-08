@@ -96,7 +96,7 @@ void separarExtension(const char* entrada, char* &nombre, char* &extension) {
 void createFileInDirectory(TDirectorio& directorio, Cadena nombreArchivo) {
     Cadena extension;
     Cadena nombre;
-    bool pe = true;
+
 
     separarExtension(nombreArchivo, nombre, extension);
    
