@@ -40,7 +40,7 @@ TipoRet DELETE (TDirectorio &sistema, char *nombreArchivo);
 TipoRet ATTRIB (TDirectorio &sistema, char *nombreArchivo, char* parametro);
 TipoRet IF (TDirectorio &sistema, char *nombreArchivo, char* texto);
 TipoRet IN (TDirectorio &sistema, char *nombreArchivo, char* texto);
-TipoRet DF (TDirectorio &sistema, char *nombreArchivo, int* cantidad);
+TipoRet DF (TDirectorio &sistema, Cadena nombreArchivo, int* cantidad);
 TipoRet TYPE (TDirectorio &sistema, char *nombreArchivo);
 TipoRet DESTRUIRSISTEMA (TDirectorio &sistema);
 
@@ -203,36 +203,35 @@ TipoRet CREATE(TDirectorio &sistema, Cadena nombreArchivo) {
 
 
 TipoRet DELETE(TDirectorio &directorio, Cadena nombreArchivo) {
-    // Verificar si el archivo existe en el directorio actual
+    
     if (!existFileDirectory(directorio, nombreArchivo)) {
         return ERROR; // No existe el archivo en el directorio actual
     }
 
-    // Buscar el archivo en la lista de archivos del directorio y eliminarlo
     deleteFileDirectory(directorio, nombreArchivo);
 
-    return OK; // El archivo se eliminó exitosamente
+    return OK; 
 }
 
 TipoRet ATTRIB (TDirectorio &sistema, Cadena nombreArchivo, Cadena parametro){
-        // Verificar si el archivo existe en el directorio actual
+    
     TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
 
     if (archivo != NULL) {
-        // Verificar el valor de nuevosAtributos y realizar cambios en consecuencia
+
         if (strcmp(parametro, "+W") == 0) {
-            // Agregar permiso de escritura al archivo
+
             setWritePermission(archivo, true);
-            return OK; // Éxito al agregar permiso de escritura
+            return OK; 
         } else if (strcmp(parametro, "-W") == 0) {
-            // Quitar permiso de escritura al archivo
+       
             setWritePermission(archivo, false);
-            return OK; // Éxito al quitar permiso de escritura
+            return OK; 
         } else {
-            return ERROR; // Valor de nuevosAtributos no válido
+            return ERROR; 
         }
     } else {
-        return ERROR; // El archivo no existe en el directorio actual
+        return ERROR; 
     }
 }
 
