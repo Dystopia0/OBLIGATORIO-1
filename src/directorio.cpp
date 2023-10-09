@@ -154,7 +154,7 @@ void deleteFileDirectory(TDirectorio& directorio, Cadena nombreArchivo) {
 } 
 
 //pre-condicion: existe el archivo de nombre "nombreArchivo" en el directorio "directorio"
-//pos-condicion: elimina los "cantidad" caracteres iniciales del archivo nombreArchivo //DUDA
+//pos-condicion: elimina los "cantidad" caracteres finales del archivo nombreArchivo //DUDA
 void deleteCharsFile(TDirectorio& directorio, Cadena nombreArchivo, int cantidad){
     ListaArchivos aux = directorio->archivos;
         while(aux!=NULL && getFileName(aux->archivo)!=nombreArchivo)
