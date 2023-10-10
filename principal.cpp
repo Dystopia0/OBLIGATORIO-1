@@ -177,11 +177,23 @@ int main() {
 //****************************** Funciones a implementar ************************************
 
 TipoRet CREARSISTEMA (TDirectorio &sistema){
+        sistema = createRootDirectory();
          return OK;
 }  
 
 TipoRet CREATE (TDirectorio &sistema, char *nombreArchivo){
-        return NO_IMPLEMENTADA;
+
+   // Verificar si el nombre del archivo no está en uso en el directorio actual
+    if (!existFileDirectory(sistema, nombreArchivo)) {
+
+        
+        // Agregar el nuevo archivo al directorio actual
+        createFileInDirectory(sistema, nombreArchivo);
+        
+        return OK; // Éxito al crear el archivo
+    } else {
+        return ERROR; // El archivo ya existe en el directorio actual
+    }
 }
 
 TipoRet DELETE (TDirectorio &sistema, char *nombreArchivo){

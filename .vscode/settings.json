@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "c:\\Users\\ferna\\Documents\\GitHub\\OBLIGATORIO-1",
+            "binaryPath": "c:\\Users\\ferna\\Documents\\GitHub\\OBLIGATORIO-1\\principal",
+            "binaryArgs": []
+        }
+    ]
+}

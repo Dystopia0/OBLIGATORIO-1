@@ -94,19 +94,27 @@ void separarExtension(const char* entrada, char* &nombre, char* &extension) {
 //pre-condicion: No existe en directorio un archivo de nombre "nombreArchivo"
 //crea un archivo vacio con nombre nombreArchivo y permiso de lectura/escritura
 void createFileInDirectory(TDirectorio& directorio, Cadena nombreArchivo) {
-    Cadena extension;
-    Cadena nombre;
-
+   const int MAX_TAM = 256; // o cualquier otro valor que consideres adecuado
+    Cadena extension = new char[MAX_TAM];
+    Cadena nombre = new char[MAX_TAM];
 
     separarExtension(nombreArchivo, nombre, extension);
    
-    TArchivo archivo = createEmptyFile (nombre, extension);
-    nodoArchivo* nuevo=new nodoArchivo;
-    nuevo->archivo=archivo;
-    nuevo->sig=directorio->archivos;
-    directorio->archivos=nuevo;
-         
-    
+    TArchivo archivo = createEmptyFile(nombre, extension);
+    if (archivo == NULL) {
+        // Manejar el error de creación del archivo
+        delete[] nombre;
+        delete[] extension;
+        return;
+    }
+
+    nodoArchivo* nuevo = new nodoArchivo;
+    nuevo->archivo = archivo;
+    nuevo->sig = directorio->archivos;
+    directorio->archivos = nuevo;
+
+    delete[] nombre;
+    delete[] extension;
 }
 
 
