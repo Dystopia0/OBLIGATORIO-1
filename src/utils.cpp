@@ -9,6 +9,7 @@
 
 #include "stdio.h"
 
+
 nat leerNat() {
   nat res;
   scanf("%u", &res);

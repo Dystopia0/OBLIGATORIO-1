@@ -1,4 +1,3 @@
-
 /*
 Módulo principal de la tarea 1.FILE SYSTEM
 
@@ -40,7 +39,7 @@ TipoRet DELETE (TDirectorio &sistema, char *nombreArchivo);
 TipoRet ATTRIB (TDirectorio &sistema, char *nombreArchivo, char* parametro);
 TipoRet IF (TDirectorio &sistema, char *nombreArchivo, char* texto);
 TipoRet IN (TDirectorio &sistema, char *nombreArchivo, char* texto);
-TipoRet DF (TDirectorio &sistema, Cadena nombreArchivo, int* cantidad);
+TipoRet DF (TDirectorio &sistema, char *nombreArchivo, char* cantidad);
 TipoRet TYPE (TDirectorio &sistema, char *nombreArchivo);
 TipoRet DESTRUIRSISTEMA (TDirectorio &sistema);
 
@@ -53,7 +52,7 @@ int main() {
     char parametro[MAX_PALABRA];
     char texto[MAX_PALABRA];
     char nombrearchivo[MAX_NOMBRE];
-    int cantidad [MAX_PALABRA];
+    char cantidad [MAX_PALABRA];
     //char parametro;
     TDirectorio sistema;
     int sistemaInicializado=false;
@@ -88,6 +87,7 @@ int main() {
         }
         else if (!strcmp(comando,"DF")){
                 leerChars(nombrearchivo);
+                leerChars(cantidad);
         }        
         else if (!strcmp(comando,"TYPE"))
                 leerChars(nombrearchivo);
@@ -109,15 +109,14 @@ int main() {
                  printf("EL SISTEMA YA FUE INICIALIZADO\n");
 
         }else if (0 == strcmp(comando, "CREATEFILE")) {   
-                printf("ingresa el nombre del archivo:\n"); 
+
                 TipoRet salida= CREATE(sistema, nombrearchivo);
                 if (salida == OK)
                         printf("OK\n");
-                else if (salida == ERROR )
-                                printf("NO_ANDA\n"); 
+                else if (salida == NO_IMPLEMENTADA )
+                                printf("NO_IMPLEMENTADA\n"); 
 
         } else if (0 == strcmp(comando, "DELETE")) {
-            printf("DAME EL NOMBREEE");
                 TipoRet salida=DELETE(sistema,nombrearchivo);
                 if (salida == OK)
                         printf("OK\n");
@@ -178,190 +177,37 @@ int main() {
 //****************************** Funciones a implementar ************************************
 
 TipoRet CREARSISTEMA (TDirectorio &sistema){
-         sistema = createRootDirectory();
          return OK;
 }  
 
-TipoRet CREATE(TDirectorio &sistema, Cadena nombreArchivo) {
-    //Cadena extension = "txt";
-   // Verificar si el nombre del archivo no está en uso en el directorio actual
-    if (!existFileDirectory(sistema, nombreArchivo)) {
-        // Crear un nuevo archivo vacío con el nombre proporcionado y extensión "txt"
-       /*TArchivo nuevoArchivo = createEmptyFile(nombreArchivo, extension);
-        
-        // Agregar el nuevo archivo al directorio actual
-        createFileInDirectory(sistema, getFileName (nuevoArchivo));*/
-        
-        return OK; // Éxito al crear el archivo
-    } else {
-        return ERROR; // El archivo ya existe en el directorio actual
-    }
+TipoRet CREATE (TDirectorio &sistema, Cadena nombreArchivo){
+        return NO_IMPLEMENTADA;
 }
 
-
-
-
-
-TipoRet DELETE(TDirectorio &directorio, Cadena nombreArchivo) {
-    
-    if (!existFileDirectory(directorio, nombreArchivo)) {
-        return ERROR; // No existe el archivo en el directorio actual
-    }
-
-    deleteFileDirectory(directorio, nombreArchivo);
-
-    return OK; 
+TipoRet DELETE (TDirectorio &sistema, Cadena nombreArchivo){
+        return NO_IMPLEMENTADA;
 }
 
-TipoRet ATTRIB (TDirectorio &sistema, Cadena nombreArchivo, Cadena parametro){
-    
-    TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
-
-    if (archivo != NULL) {
-
-        if (strcmp(parametro, "+W") == 0) {
-
-            setWritePermission(archivo, true);
-            return OK; 
-        } else if (strcmp(parametro, "-W") == 0) {
-       
-            setWritePermission(archivo, false);
-            return OK; 
-        } else {
-            return ERROR; 
-        }
-    } else {
-        return ERROR; 
-    }
+TipoRet ATTRIB (TDirectorio &sistema, Cadena nombreArchivo, Cadena nombrearchivo){
+        return NO_IMPLEMENTADA;
 }
 
-
-TipoRet IF(TDirectorio &sistema, Cadena nombreArchivo, Cadena texto) {
-    TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
-
-
-    insertChartsNewRow(archivo, texto);
-
-    TLinea linea=getFirstRow (archivo);
-     int cantidadCaracteres=countNodesLine(linea);
-     int eliminar=cantidadCaracteres-TEXTO_MAX;
-     for( int i=1;i<=eliminar;i++)
-     {
-        deleteLastChar(linea);
-     }
-
-    return OK;
+TipoRet IF (TDirectorio &sistema, Cadena nombreArchivo, Cadena texto){
+        return NO_IMPLEMENTADA;
 }
 
-TipoRet IN(TDirectorio &sistema, Cadena nombreArchivo, Cadena texto) {
-
-    TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
-
-    if (!isEmptyFile(archivo)) {
-
-        if (haveWritePermission(archivo)) {
-        
-            TLinea primeraLinea = getFirstLine(archivo);
-
-            int longitudActual = getCountChars(archivo);
-
-            int longitudTexto = strlen(texto);
-
-
-            if (longitudActual + longitudTexto > TEXTO_MAX) {
-
-                int caracteresAEliminar = longitudActual + longitudTexto - TEXTO_MAX;
-
-                while (!isEmptyLine(primeraLinea) && caracteresAEliminar > 0) {
-                    int longitudLinea = countNodesLine(primeraLinea);
-                    if (caracteresAEliminar >= longitudLinea) {
-
-                        caracteresAEliminar -= longitudLinea;
-                        deleteFirstChar(primeraLinea);
-                    } else {
-
-                        for (int i = 0; i < caracteresAEliminar; i++) {
-                            deleteFirstChar(primeraLinea);
-                        }
-                        caracteresAEliminar = 0;
-                    }
-                }
-            }
-
-            // Agregar el texto como primera línea
-            insertChartsFirstRow(archivo, texto);
-
-            return OK; // Éxito al agregar el texto
-        } else {
-            return ERROR; // El archivo no tiene permiso de escritura
-        }
-    } else {
-        return ERROR; // El archivo no existe en el directorio actual
-    }
+TipoRet IN (TDirectorio &sistema, Cadena nombreArchivo, Cadena texto){
+        return NO_IMPLEMENTADA;
 }
 
-
-
-TipoRet DF(TDirectorio &sistema, Cadena nombreArchivo, int cantidad) { //chequear posibles errores
-  TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
-  
-    TLinea linea=getFirstRow (archivo);
-     for( int i=1;i<=cantidad;i++)
-     {
-        deleteFirstChar(linea);
-     }
-
-    return OK;
+TipoRet DF (TDirectorio &sistema, Cadena nombreArchivo, Cadena cantidad){
+        return NO_IMPLEMENTADA;
 }
 
-
-TipoRet TYPE(TDirectorio &sistema, Cadena nombreArchivo) {
-
-    TArchivo archivo = getFileDirectory(sistema, nombreArchivo);
-
-    if (!isEmptyFile(archivo)) {
-
-        printf("Contenido del archivo \"%s\":\n", nombreArchivo);
-
-
-        TLinea primeraLinea = getFirstLine(archivo);
-
-
-        if (!isEmptyLine(primeraLinea)) {
-
-            while (primeraLinea != NULL) {
-
-                char primerCaracter = firstCharLine(primeraLinea);
-                TLinea lineaActual = primeraLinea;
-
-                while (lineaActual != NULL) {
-                    printf("%c", primerCaracter);
-                    lineaActual = nextLine(lineaActual);
-                    if (lineaActual != NULL) {
-                        primerCaracter = firstCharLine(lineaActual);
-                    }
-                }
-
-                // Avanzar a la siguiente línea
-                primeraLinea = nextLine(primeraLinea);
-
-                // Imprimir una nueva línea si no es la última línea
-                if (primeraLinea != NULL) {
-                    printf("\n");
-                }
-            }
-
-            printf("\n"); // Imprimir una línea en blanco al final
-        } else {
-            printf("El archivo no posee contenido.\n");
-        }
-
-        return OK; // Éxito al mostrar el contenido
-    } else {
-        return ERROR; // El archivo no existe en el directorio actual
-    }
+TipoRet TYPE (TDirectorio &sistema, Cadena nombreArchivo){
+        return NO_IMPLEMENTADA;
 }
 
-TipoRet DESTRUIRSISTEMA(TDirectorio &sistema) {
-    return OK;
+TipoRet DESTRUIRSISTEMA (TDirectorio &sistema){
+        return NO_IMPLEMENTADA;
 }
