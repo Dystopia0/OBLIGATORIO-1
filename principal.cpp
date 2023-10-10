@@ -180,31 +180,31 @@ TipoRet CREARSISTEMA (TDirectorio &sistema){
          return OK;
 }  
 
-TipoRet CREATE (TDirectorio &sistema, Cadena nombreArchivo){
+TipoRet CREATE (TDirectorio &sistema, char *nombreArchivo){
         return NO_IMPLEMENTADA;
 }
 
-TipoRet DELETE (TDirectorio &sistema, Cadena nombreArchivo){
+TipoRet DELETE (TDirectorio &sistema, char *nombreArchivo){
         return NO_IMPLEMENTADA;
 }
 
-TipoRet ATTRIB (TDirectorio &sistema, Cadena nombreArchivo, Cadena nombrearchivo){
+TipoRet ATTRIB (TDirectorio &sistema, char *nombreArchivo, char *nombrearchivo){
         return NO_IMPLEMENTADA;
 }
 
-TipoRet IF (TDirectorio &sistema, Cadena nombreArchivo, Cadena texto){
+TipoRet IF (TDirectorio &sistema, char *nombreArchivo, char *texto){
         return NO_IMPLEMENTADA;
 }
 
-TipoRet IN (TDirectorio &sistema, Cadena nombreArchivo, Cadena texto){
+TipoRet IN (TDirectorio &sistema, char *nombreArchivo, char *texto){
         return NO_IMPLEMENTADA;
 }
 
-TipoRet DF (TDirectorio &sistema, Cadena nombreArchivo, Cadena cantidad){
+TipoRet DF (TDirectorio &sistema, char *nombreArchivo, char *cantidad){
         return NO_IMPLEMENTADA;
 }
 
-TipoRet TYPE (TDirectorio &sistema, Cadena nombreArchivo){
+TipoRet TYPE (TDirectorio &sistema, char *nombreArchivo){
         return NO_IMPLEMENTADA;
 }
 
