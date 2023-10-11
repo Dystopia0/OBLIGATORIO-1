@@ -23,6 +23,7 @@ struct _rep_directorio {
 typedef struct _rep_directorio *TDirectorio;
 
 TDirectorio createRootDirectory() {
+
     TDirectorio raiz = new _rep_directorio;
     raiz->nombre = new char[strlen("Raíz")+1];
     strcpy(raiz->nombre, "Raíz");
@@ -37,7 +38,7 @@ bool isEmptyDirectory(TDirectorio directorio) {
 }
 
 bool existFileDirectory(TDirectorio directorio, Cadena nombreArchivo) {
-    
+    printf ("ENTRO AL EXISTFILE");
     ListaArchivos aux=directorio->archivos;
     while (aux != NULL) {
         if (strcmp(getFileName(aux->archivo), nombreArchivo) == 0) {

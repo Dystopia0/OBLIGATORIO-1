@@ -109,12 +109,14 @@ int main() {
                  printf("EL SISTEMA YA FUE INICIALIZADO\n");
 
         }else if (0 == strcmp(comando, "CREATEFILE")) {   
-
+                printf("hola entraste al CREATE");
+                printf("hola entraste al CREATE");
                 TipoRet salida= CREATE(sistema, nombrearchivo);
+                return salida;
                 if (salida == OK)
-                        printf("OK\n");
+                       printf("OK\n");
                 else if (salida == NO_IMPLEMENTADA )
-                                printf("NO_IMPLEMENTADA\n"); 
+                               printf("NO_IMPLEMENTADA\n"); 
 
         } else if (0 == strcmp(comando, "DELETE")) {
                 TipoRet salida=DELETE(sistema,nombrearchivo);
@@ -177,12 +179,15 @@ int main() {
 //****************************** Funciones a implementar ************************************
 
 TipoRet CREARSISTEMA (TDirectorio &sistema){
+        printf ("sistema creado");
         sistema = createRootDirectory();
          return OK;
 }  
 
 TipoRet CREATE (TDirectorio &sistema, char *nombreArchivo){
-
+        printf ("entro al CREATE");
+         printf ("entro al CREATE");
+          printf ("entro al CREATE");
    // Verificar si el nombre del archivo no está en uso en el directorio actual
     if (!existFileDirectory(sistema, nombreArchivo)) {
 
